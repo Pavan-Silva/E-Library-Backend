@@ -1,7 +1,7 @@
 package lk.elib.elibrarybackend.controller;
 
 import lk.elib.elibrarybackend.entity.Book;
-import lk.elib.elibrarybackend.projection.BookList;
+import lk.elib.elibrarybackend.projection.BookFilter;
 import lk.elib.elibrarybackend.service.book.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
-    public List<BookList> findAllBooks() {
+    public List<BookFilter> findAllBooks() {
         return bookService.getBookList();
     }
 
@@ -25,12 +25,12 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public List<BookList> searchBooks(@RequestParam String query) {
+    public List<BookFilter> searchBooks(@RequestParam String query) {
         return bookService.search(query);
     }
 
     @GetMapping("/categories")
-    public List<BookList> findBooksByCategory(@RequestParam String query) {
+    public List<BookFilter> findBooksByCategory(@RequestParam String query) {
         return null;
     }
 

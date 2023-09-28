@@ -1,7 +1,10 @@
 package lk.elib.elibrarybackend.projection;
 
-public interface BookList {
+public interface BookFilter {
+
     Integer getId();
+
     String getTitle();
+
     Byte[] getCoverImage();
 }

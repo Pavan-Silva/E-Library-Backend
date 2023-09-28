@@ -1,5 +1,7 @@
 package lk.elib.elibrarybackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -13,6 +15,7 @@ import lombok.Setter;
 @Table(name = "member")
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Member {
 
     @Id
@@ -21,6 +24,7 @@ public class Member {
 
     @MapsId
     @OneToOne
+    @JsonIgnore
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

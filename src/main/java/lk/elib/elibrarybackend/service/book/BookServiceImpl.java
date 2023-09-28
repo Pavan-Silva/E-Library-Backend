@@ -2,7 +2,7 @@ package lk.elib.elibrarybackend.service.book;
 
 import lk.elib.elibrarybackend.entity.Book;
 import lk.elib.elibrarybackend.exception.ResourceNotFoundException;
-import lk.elib.elibrarybackend.projection.BookList;
+import lk.elib.elibrarybackend.projection.BookFilter;
 import lk.elib.elibrarybackend.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
 
     @Override
-    public List<BookList> getBookList() {
+    public List<BookFilter> getBookList() {
         return bookRepository.getBookList();
     }
 
@@ -34,7 +34,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookList> search(String query) {
+    public List<BookFilter> search(String query) {
         return bookRepository.search(query);
     }
 
