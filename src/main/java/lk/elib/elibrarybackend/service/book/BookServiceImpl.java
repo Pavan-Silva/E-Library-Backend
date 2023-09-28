@@ -17,11 +17,6 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
 
     @Override
-    public List<Book> findAll() {
-        return bookRepository.findAll();
-    }
-
-    @Override
     public List<BookList> getBookList() {
         return bookRepository.getBookList();
     }
@@ -34,13 +29,13 @@ public class BookServiceImpl implements BookService {
             return bookOpt.get();
 
         } else {
-            throw new RuntimeException();
+            throw new RuntimeException("Invalid Book Id - " + id);
         }
     }
 
     @Override
-    public List<BookList> searchByName(String query) {
-        return bookRepository.searchByName(query);
+    public List<BookList> search(String query) {
+        return bookRepository.search(query);
     }
 
     @Override
@@ -49,7 +44,26 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Book update(Book book) {
+        Optional<Book> bookOpt = bookRepository.findById(book.getId());
+
+        if (bookOpt.isPresent()) {
+            return bookRepository.save(book);
+
+        } else {
+            throw new RuntimeException("Invalid Book Id - " + book.getId());
+        }
+    }
+
+    @Override
     public void deleteById(int id) {
-        bookRepository.deleteById(id);
+        Optional<Book> bookOpt = bookRepository.findById(id);
+
+        if (bookOpt.isPresent()) {
+            bookRepository.deleteById(id);
+
+        } else {
+            throw new RuntimeException("Invalid Book Id - " + id);
+        }
     }
 }

@@ -16,34 +16,33 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
-    public ResponseEntity<List<Book>> findAllBooks() {
-        return ResponseEntity.ok(bookService.findAll());
+    public List<BookList> findAllBooks() {
+        return bookService.getBookList();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> findBookById(@PathVariable int id) {
-        return ResponseEntity.ok(bookService.findById(id));
+    public Book findBookById(@PathVariable int id) {
+        return bookService.findById(id);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<BookList>> searchBooks(@RequestParam(required = false) String query) {
+    public List<BookList> searchBooks(@RequestParam String query) {
+        return bookService.search(query);
+    }
 
-        if (query == null) {
-            return ResponseEntity.ok(bookService.getBookList());
-
-        } else {
-            return ResponseEntity.ok(bookService.searchByName(query));
-        }
+    @GetMapping("/categories")
+    public List<BookList> findBooksByCategory(@RequestParam String query) {
+        return null;
     }
 
     @PostMapping
-    public ResponseEntity<Book> addNewBook(@RequestBody Book book) {
-        return ResponseEntity.ok(bookService.save(book));
+    public Book addNewBook(@RequestBody Book book) {
+        return bookService.save(book);
     }
 
     @PutMapping
-    public ResponseEntity<Book> updateBook(@RequestBody Book book) {
-        return ResponseEntity.ok(bookService.save(book));
+    public Book updateBook(@RequestBody Book book) {
+        return bookService.update(book);
     }
 
     @DeleteMapping("/{id}")
