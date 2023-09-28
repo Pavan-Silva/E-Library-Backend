@@ -12,5 +12,7 @@ public interface StaffService {
 
     StaffMember save(StaffMember staffMember);
 
+    StaffMember update(StaffMember staffMember);
+
     void deleteById(int id);
 }

@@ -1,6 +1,7 @@
 package lk.elib.elibrarybackend.service.staff;
 
 import lk.elib.elibrarybackend.entity.StaffMember;
+import lk.elib.elibrarybackend.exception.ResourceNotFoundException;
 import lk.elib.elibrarybackend.repository.StaffRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class StaffServiceImpl implements StaffService {
             return optStaffMember.get();
 
         } else {
-            throw new RuntimeException();
+            throw new ResourceNotFoundException("Invalid staff id - " + id);
         }
     }
 
@@ -37,7 +38,27 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
+    public StaffMember update(StaffMember staffMember) {
+        Optional<StaffMember> optStaffMember = staffRepository.findById(staffMember.getId());
+
+        if (optStaffMember.isPresent()) {
+            staffMember.getUser().setId(staffMember.getId());
+            return staffRepository.save(staffMember);
+
+        } else {
+            throw new ResourceNotFoundException("Invalid staff id - " + staffMember.getId());
+        }
+    }
+
+    @Override
     public void deleteById(int id) {
-        staffRepository.deleteById(id);
+        Optional<StaffMember> optStaffMember = staffRepository.findById(id);
+
+        if (optStaffMember.isPresent()) {
+            staffRepository.deleteById(id);
+
+        } else {
+            throw new ResourceNotFoundException("Invalid staff id - " + id);
+        }
     }
 }
