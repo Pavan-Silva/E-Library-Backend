@@ -4,7 +4,6 @@ import lk.elib.elibrarybackend.entity.Book;
 import lk.elib.elibrarybackend.projection.BookList;
 import lk.elib.elibrarybackend.service.book.BookService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 

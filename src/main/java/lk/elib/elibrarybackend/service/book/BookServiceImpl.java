@@ -3,7 +3,6 @@ package lk.elib.elibrarybackend.service.book;
 import lk.elib.elibrarybackend.entity.Book;
 import lk.elib.elibrarybackend.projection.BookList;
 import lk.elib.elibrarybackend.repository.BookRepository;
-import lk.elib.elibrarybackend.service.book.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

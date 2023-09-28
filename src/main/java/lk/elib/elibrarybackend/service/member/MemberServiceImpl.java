@@ -29,7 +29,7 @@ public class MemberServiceImpl implements MemberService {
             return optMember.get();
 
         } else {
-            throw new RuntimeException();
+            throw new RuntimeException("Invalid Member Id - " + id);
         }
     }
 
@@ -45,7 +45,27 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public Member update(Member member) {
+        Optional<Member> optMember = memberRepository.findById(member.getId());
+
+        if (optMember.isPresent()) {
+            member.getUser().setId(member.getId());
+            return memberRepository.save(member);
+
+        } else {
+            throw new RuntimeException("Invalid Member Id - " + member.getId());
+        }
+    }
+
+    @Override
     public void deleteById(int id) {
-        memberRepository.deleteById(id);
+        Optional<Member> optMember = memberRepository.findById(id);
+
+        if (optMember.isPresent()) {
+            memberRepository.deleteById(id);
+
+        } else {
+            throw new RuntimeException("Invalid Member Id - " + id);
+        }
     }
 }
