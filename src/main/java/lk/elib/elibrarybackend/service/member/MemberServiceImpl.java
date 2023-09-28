@@ -1,6 +1,7 @@
 package lk.elib.elibrarybackend.service.member;
 
 import lk.elib.elibrarybackend.entity.Member;
+import lk.elib.elibrarybackend.exception.ResourceNotFoundException;
 import lk.elib.elibrarybackend.repository.MemberRepository;
 import lk.elib.elibrarybackend.service.role.RoleService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class MemberServiceImpl implements MemberService {
             return optMember.get();
 
         } else {
-            throw new RuntimeException("Invalid Member Id - " + id);
+            throw new ResourceNotFoundException("Invalid member id - " + id);
         }
     }
 
@@ -53,7 +54,7 @@ public class MemberServiceImpl implements MemberService {
             return memberRepository.save(member);
 
         } else {
-            throw new RuntimeException("Invalid Member Id - " + member.getId());
+            throw new ResourceNotFoundException("Invalid member id - " + member.getId());
         }
     }
 
@@ -65,7 +66,7 @@ public class MemberServiceImpl implements MemberService {
             memberRepository.deleteById(id);
 
         } else {
-            throw new RuntimeException("Invalid Member Id - " + id);
+            throw new ResourceNotFoundException("Invalid member id - " + id);
         }
     }
 }

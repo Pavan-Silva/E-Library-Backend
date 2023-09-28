@@ -1,6 +1,7 @@
 package lk.elib.elibrarybackend.service.book;
 
 import lk.elib.elibrarybackend.entity.Book;
+import lk.elib.elibrarybackend.exception.ResourceNotFoundException;
 import lk.elib.elibrarybackend.projection.BookList;
 import lk.elib.elibrarybackend.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class BookServiceImpl implements BookService {
             return bookOpt.get();
 
         } else {
-            throw new RuntimeException("Invalid Book Id - " + id);
+            throw new ResourceNotFoundException("Invalid book id - " + id);
         }
     }
 
@@ -50,7 +51,7 @@ public class BookServiceImpl implements BookService {
             return bookRepository.save(book);
 
         } else {
-            throw new RuntimeException("Invalid Book Id - " + book.getId());
+            throw new ResourceNotFoundException("Invalid book id - " + book.getId());
         }
     }
 
@@ -62,7 +63,7 @@ public class BookServiceImpl implements BookService {
             bookRepository.deleteById(id);
 
         } else {
-            throw new RuntimeException("Invalid Book Id - " + id);
+            throw new ResourceNotFoundException("Invalid book id - " + id);
         }
     }
 }
