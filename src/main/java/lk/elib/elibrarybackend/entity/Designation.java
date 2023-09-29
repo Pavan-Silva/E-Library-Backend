@@ -23,5 +23,4 @@ public class Designation {
     @Size(max = 45)
     @Column(name = "name", length = 45)
     private String name;
-
 }

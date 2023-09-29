@@ -7,6 +7,7 @@ import lk.elib.elibrarybackend.exception.ResourceNotFoundException;
 import lk.elib.elibrarybackend.repository.MemberRepository;
 import lk.elib.elibrarybackend.repository.RoleRepository;
 import lk.elib.elibrarybackend.util.Mapper;
+import lk.elib.elibrarybackend.security.PasswordEncoder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +43,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberDto save(MemberDto memberDto) {
         Member member = Mapper.dtoToMember(memberDto);
+
+        member.getUser().setPassword(PasswordEncoder.encode(
+                member.getUser().getPassword()
+        ));
 
         List<Role> roles = new ArrayList<>();
         roles.add(roleRepository.findByName("ROLE_MEMBER"));

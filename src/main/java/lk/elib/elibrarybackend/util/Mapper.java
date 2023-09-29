@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Mapper {
-
     private static final ModelMapper modelMapper = new ModelMapper();
 
     public static List<StaffMemberDto> staffListToDto(List<StaffMember> list) {

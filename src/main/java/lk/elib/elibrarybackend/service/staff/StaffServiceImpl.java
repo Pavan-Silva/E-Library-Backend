@@ -6,6 +6,7 @@ import lk.elib.elibrarybackend.entity.StaffMember;
 import lk.elib.elibrarybackend.exception.ResourceNotFoundException;
 import lk.elib.elibrarybackend.repository.RoleRepository;
 import lk.elib.elibrarybackend.repository.StaffRepository;
+import lk.elib.elibrarybackend.security.PasswordEncoder;
 import lk.elib.elibrarybackend.util.Mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,10 @@ public class StaffServiceImpl implements StaffService {
     @Override
     public StaffMemberDto save(StaffMemberDto staffMemberDto) {
         StaffMember staffMember = Mapper.dtoToStaffMember(staffMemberDto);
+
+        staffMember.getUser().setPassword(PasswordEncoder.encode(
+                staffMember.getUser().getPassword()
+        ));
 
         List<Role> roles = new ArrayList<>();
         roles.add(roleRepository.findByName("ROLE_MEMBER"));
