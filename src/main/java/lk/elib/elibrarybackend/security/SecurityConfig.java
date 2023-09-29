@@ -3,7 +3,6 @@ package lk.elib.elibrarybackend.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -36,8 +35,7 @@ public class SecurityConfig {
         http.csrf().disable()
                 .authorizeHttpRequests(
                         (authorize) -> authorize
-                                .requestMatchers(HttpMethod.GET, "/api/books/**").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/api/members").permitAll()
+                                .requestMatchers("/api/books/**").hasRole("MEMBER")
                                 .requestMatchers("api/auth/**").permitAll()
                                 .anyRequest().authenticated()
                 );
