@@ -1,6 +1,6 @@
 package lk.elib.elibrarybackend.controller;
 
-import lk.elib.elibrarybackend.entity.Member;
+import lk.elib.elibrarybackend.dto.MemberDto;
 import lk.elib.elibrarybackend.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,23 +15,23 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping
-    public List<Member> findAllMembers() {
+    public List<MemberDto> findAllMembers() {
         return memberService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Member findMemberById(@PathVariable int id) {
+    public MemberDto findMemberById(@PathVariable int id) {
         return memberService.findById(id);
     }
 
     @PostMapping
-    public Member addNewMember(@RequestBody Member member) {
-        return memberService.save(member);
+    public MemberDto addNewMember(@RequestBody MemberDto memberDto) {
+        return memberService.save(memberDto);
     }
 
     @PutMapping
-    public Member updateMember(@RequestBody Member member) {
-        return memberService.update(member);
+    public MemberDto updateMember(@RequestBody MemberDto memberDto) {
+        return memberService.update(memberDto);
     }
 
     @DeleteMapping("/{id}")

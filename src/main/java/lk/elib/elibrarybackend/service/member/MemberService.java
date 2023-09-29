@@ -1,17 +1,17 @@
 package lk.elib.elibrarybackend.service.member;
 
-import lk.elib.elibrarybackend.entity.Member;
+import lk.elib.elibrarybackend.dto.MemberDto;
 
 import java.util.List;
 
 public interface MemberService {
-    List<Member> findAll();
+    List<MemberDto> findAll();
 
-    Member findById(int id);
+    MemberDto findById(int id);
 
-    Member save(Member member);
+    MemberDto save(MemberDto memberDto);
 
-    Member update(Member member);
+    MemberDto update(MemberDto memberDto);
 
     void deleteById(int id);
 }
