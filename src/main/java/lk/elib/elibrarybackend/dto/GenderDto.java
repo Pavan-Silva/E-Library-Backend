@@ -1,7 +1,7 @@
 package lk.elib.elibrarybackend.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,11 +9,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RoleDto {
+public class GenderDto {
 
-    @JsonIgnore
-    Integer id;
+    private Integer id;
 
     @NotNull
-    String name;
+    @Size(max = 45)
+    private String name;
 }

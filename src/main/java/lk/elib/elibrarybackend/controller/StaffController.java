@@ -1,6 +1,6 @@
 package lk.elib.elibrarybackend.controller;
 
-import lk.elib.elibrarybackend.entity.StaffMember;
+import lk.elib.elibrarybackend.dto.StaffMemberDto;
 import lk.elib.elibrarybackend.service.staff.StaffService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,23 +15,23 @@ public class StaffController {
     private final StaffService staffService;
 
     @GetMapping
-    public List<StaffMember> findAllStaffMembers() {
+    public List<StaffMemberDto> findAllStaffMembers() {
         return staffService.findAll();
     }
 
     @GetMapping("/{id}")
-    public StaffMember findStaffMemberById(@PathVariable int id) {
+    public StaffMemberDto findStaffMemberById(@PathVariable int id) {
         return staffService.findById(id);
     }
 
     @PostMapping
-    public StaffMember addNewStaffMember(@RequestBody StaffMember staffMember) {
-        return staffService.save(staffMember);
+    public StaffMemberDto addNewStaffMember(@RequestBody StaffMemberDto staffMemberDto) {
+        return staffService.save(staffMemberDto);
     }
 
     @PutMapping
-    public StaffMember updateStaffMember(@RequestBody StaffMember staffMember) {
-        return staffService.update(staffMember);
+    public StaffMemberDto updateStaffMember(@RequestBody StaffMemberDto staffMemberDto) {
+        return staffService.update(staffMemberDto);
     }
 
     @DeleteMapping("/{id}")

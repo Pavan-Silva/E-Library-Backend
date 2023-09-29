@@ -1,18 +1,18 @@
 package lk.elib.elibrarybackend.service.staff;
 
-import lk.elib.elibrarybackend.entity.StaffMember;
+import lk.elib.elibrarybackend.dto.StaffMemberDto;
 
 import java.util.List;
 
 public interface StaffService {
 
-    List<StaffMember> findAll();
+    List<StaffMemberDto> findAll();
 
-    StaffMember findById(int id);
+    StaffMemberDto findById(int id);
 
-    StaffMember save(StaffMember staffMember);
+    StaffMemberDto save(StaffMemberDto staffMemberDto);
 
-    StaffMember update(StaffMember staffMember);
+    StaffMemberDto update(StaffMemberDto staffMemberDto);
 
     void deleteById(int id);
 }

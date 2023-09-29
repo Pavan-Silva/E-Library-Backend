@@ -1,16 +1,18 @@
 package lk.elib.elibrarybackend.service.staff;
 
+import lk.elib.elibrarybackend.dto.StaffMemberDto;
 import lk.elib.elibrarybackend.entity.Role;
 import lk.elib.elibrarybackend.entity.StaffMember;
 import lk.elib.elibrarybackend.exception.ResourceNotFoundException;
+import lk.elib.elibrarybackend.repository.RoleRepository;
 import lk.elib.elibrarybackend.repository.StaffRepository;
+import lk.elib.elibrarybackend.util.Mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -18,17 +20,19 @@ public class StaffServiceImpl implements StaffService {
 
     private final StaffRepository staffRepository;
 
+    private final RoleRepository roleRepository;
+
     @Override
-    public List<StaffMember> findAll() {
-        return staffRepository.findAll();
+    public List<StaffMemberDto> findAll() {
+        return Mapper.staffListToDto(staffRepository.findAll());
     }
 
     @Override
-    public StaffMember findById(int id) {
+    public StaffMemberDto findById(int id) {
         Optional<StaffMember> optStaffMember = staffRepository.findById(id);
 
         if (optStaffMember.isPresent()) {
-            return optStaffMember.get();
+            return Mapper.staffMemberToDto(optStaffMember.get());
 
         } else {
             throw new ResourceNotFoundException("Invalid staff id - " + id);
@@ -36,26 +40,27 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public StaffMember save(StaffMember staffMember) {
-        Role roleMember = new Role(1,"ROLE_MEMBER");
-        Role roleEmployee = new Role(2,"ROLE_EMPLOYEE");
+    public StaffMemberDto save(StaffMemberDto staffMemberDto) {
+        StaffMember staffMember = Mapper.dtoToStaffMember(staffMemberDto);
 
-        Set<Role> roleSet = new LinkedHashSet<>();
-        roleSet.add(roleMember);
-        roleSet.add(roleEmployee);
+        List<Role> roles = new ArrayList<>();
+        roles.add(roleRepository.findByName("ROLE_MEMBER"));
+        roles.add(roleRepository.findByName("ROLE_EMPLOYEE"));
 
-        staffMember.getUser().setRoles(roleSet);
+        staffMember.getUser().setRoles(roles);
 
-        return staffRepository.save(staffMember);
+        return Mapper.staffMemberToDto(staffRepository.save(staffMember));
     }
 
     @Override
-    public StaffMember update(StaffMember staffMember) {
+    public StaffMemberDto update(StaffMemberDto staffMemberDto) {
+        StaffMember staffMember = Mapper.dtoToStaffMember(staffMemberDto);
+
         Optional<StaffMember> optStaffMember = staffRepository.findById(staffMember.getId());
 
         if (optStaffMember.isPresent()) {
             staffMember.getUser().setId(staffMember.getId());
-            return staffRepository.save(staffMember);
+            return Mapper.staffMemberToDto(staffRepository.save(staffMember));
 
         } else {
             throw new ResourceNotFoundException("Invalid staff id - " + staffMember.getId());

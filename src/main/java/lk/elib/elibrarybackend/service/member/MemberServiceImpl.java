@@ -5,28 +5,26 @@ import lk.elib.elibrarybackend.entity.Member;
 import lk.elib.elibrarybackend.entity.Role;
 import lk.elib.elibrarybackend.exception.ResourceNotFoundException;
 import lk.elib.elibrarybackend.repository.MemberRepository;
+import lk.elib.elibrarybackend.repository.RoleRepository;
+import lk.elib.elibrarybackend.util.Mapper;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
-    private final ModelMapper modelMapper;
+
+    private final RoleRepository roleRepository;
 
     @Override
     public List<MemberDto> findAll() {
-        return memberRepository.findAll().stream().map(
-                member -> modelMapper.map(member, MemberDto.class))
-                .collect(Collectors.toList());
+        return Mapper.memberListToDto(memberRepository.findAll());
     }
 
     @Override
@@ -34,7 +32,7 @@ public class MemberServiceImpl implements MemberService {
         Optional<Member> optMember = memberRepository.findById(id);
 
         if (optMember.isPresent()) {
-            return modelMapper.map(optMember.get(), MemberDto.class);
+            return Mapper.memberToDto(optMember.get());
 
         } else {
             throw new ResourceNotFoundException("Invalid member id - " + id);
@@ -43,14 +41,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberDto save(MemberDto memberDto) {
-        Member member = modelMapper.map(memberDto, Member.class);
+        Member member = Mapper.dtoToMember(memberDto);
 
-        Role role = new Role(1,"ROLE_MEMBER");
-        Set<Role> roleSet = new LinkedHashSet<>();
-        roleSet.add(role);
-        member.getUser().setRoles(roleSet);
+        List<Role> roles = new ArrayList<>();
+        roles.add(roleRepository.findByName("ROLE_MEMBER"));
+        member.getUser().setRoles(roles);
 
-        return modelMapper.map(memberRepository.save(member), MemberDto.class);
+        return Mapper.memberToDto(memberRepository.save(member));
     }
 
     @Override
@@ -58,10 +55,10 @@ public class MemberServiceImpl implements MemberService {
         Optional<Member> optMember = memberRepository.findById(memberDto.getId());
 
         if (optMember.isPresent()) {
-            Member member = modelMapper.map(memberDto, Member.class);
+            Member member = Mapper.dtoToMember(memberDto);
             member.getUser().setId(member.getId());
 
-            return modelMapper.map(memberRepository.save(member), MemberDto.class);
+            return Mapper.memberToDto(memberRepository.save(member));
 
         } else {
             throw new ResourceNotFoundException("Invalid member id - " + memberDto.getId());
