@@ -1,21 +1,22 @@
 package lk.elib.elibrarybackend.service.member;
 
 import lk.elib.elibrarybackend.entity.Member;
+import lk.elib.elibrarybackend.entity.Role;
 import lk.elib.elibrarybackend.exception.ResourceNotFoundException;
 import lk.elib.elibrarybackend.repository.MemberRepository;
-import lk.elib.elibrarybackend.service.role.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
-    private final RoleService roleService;
 
     @Override
     public List<Member> findAll() {
@@ -36,13 +37,14 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member save(Member member) {
-        Member memberResult = memberRepository.save(member);
+        Role role = new Role(1,"ROLE_MEMBER");
 
-        if (memberResult.getId() != null) {
-            roleService.setRole(memberResult.getId(), "ROLE_MEMBER");
-        }
+        Set<Role> roleSet = new LinkedHashSet<>();
+        roleSet.add(role);
 
-        return memberResult;
+        member.getUser().setRoles(roleSet);
+
+        return memberRepository.save(member);
     }
 
     @Override

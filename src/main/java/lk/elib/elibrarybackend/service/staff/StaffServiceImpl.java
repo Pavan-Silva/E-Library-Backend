@@ -1,13 +1,16 @@
 package lk.elib.elibrarybackend.service.staff;
 
+import lk.elib.elibrarybackend.entity.Role;
 import lk.elib.elibrarybackend.entity.StaffMember;
 import lk.elib.elibrarybackend.exception.ResourceNotFoundException;
 import lk.elib.elibrarybackend.repository.StaffRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +37,15 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public StaffMember save(StaffMember staffMember) {
+        Role roleMember = new Role(1,"ROLE_MEMBER");
+        Role roleEmployee = new Role(2,"ROLE_EMPLOYEE");
+
+        Set<Role> roleSet = new LinkedHashSet<>();
+        roleSet.add(roleMember);
+        roleSet.add(roleEmployee);
+
+        staffMember.getUser().setRoles(roleSet);
+
         return staffRepository.save(staffMember);
     }
 

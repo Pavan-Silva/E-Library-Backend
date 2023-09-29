@@ -22,8 +22,8 @@ public class StaffMember {
     private Integer id;
 
     @MapsId
-    @OneToOne
     @JsonIgnore
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

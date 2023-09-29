@@ -1,6 +1,7 @@
 package lk.elib.elibrarybackend.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "author")
+@Table(name = "authors")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Author {

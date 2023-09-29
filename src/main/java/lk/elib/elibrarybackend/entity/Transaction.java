@@ -12,7 +12,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "transaction")
+@Table(name = "transactions")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Transaction {
@@ -34,5 +34,4 @@ public class Transaction {
 
     @Column(name = "date")
     private Instant date;
-
 }
