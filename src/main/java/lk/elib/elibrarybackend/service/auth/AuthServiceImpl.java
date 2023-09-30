@@ -24,13 +24,13 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public JwtAuthResponse login(LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginDto.getUsername(), loginDto.getPassword()));
+                loginDto.getEmail(), loginDto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         JwtAuthResponse authResponse = new JwtAuthResponse();
         authResponse.setAccessToken(jwtTokenProvider.generateToken(authentication));
-        authResponse.setRefreshToken(jwtTokenProvider.generateRefreshToken(loginDto.getUsername()));
+        authResponse.setRefreshToken(jwtTokenProvider.generateRefreshToken(loginDto.getEmail()));
 
         return authResponse;
     }
@@ -40,7 +40,7 @@ public class AuthServiceImpl implements AuthService {
         memberService.save(memberDto);
 
         LoginDto login = new LoginDto();
-        login.setUsername(memberDto.getUser().getUsername());
+        login.setEmail(memberDto.getUser().getEmail());
         login.setPassword(memberDto.getUser().getPassword());
 
         return login(login);
@@ -51,7 +51,7 @@ public class AuthServiceImpl implements AuthService {
         JwtAuthResponse authResponse = new JwtAuthResponse();
         authResponse.setAccessToken(jwtTokenProvider.refreshToken(tokenRequest.getToken()));
         authResponse.setRefreshToken(jwtTokenProvider.generateRefreshToken(
-                jwtTokenProvider.getUsername(tokenRequest.getToken())
+                jwtTokenProvider.getEmail(tokenRequest.getToken())
         ));
 
         return authResponse;

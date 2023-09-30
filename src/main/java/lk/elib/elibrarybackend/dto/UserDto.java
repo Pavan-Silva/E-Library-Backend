@@ -18,13 +18,10 @@ public class UserDto {
     Integer id;
 
     @NotNull
-    Boolean active;
-
-    @NotNull
     List<RoleDto> roles;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    String username;
+    String email;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;

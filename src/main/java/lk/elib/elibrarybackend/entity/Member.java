@@ -32,10 +32,6 @@ public class Member {
     @Column(name = "last_name", length = 45)
     private String lastName;
 
-    @Size(max = 45)
-    @Column(name = "email", length = 45)
-    private String email;
-
     @Size(max = 10)
     @Column(name = "mobile", length = 10)
     private String mobile;

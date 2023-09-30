@@ -22,8 +22,5 @@ public class MemberDto {
     String lastName;
 
     @NotBlank
-    String email;
-
-    @NotBlank
     String mobile;
 }

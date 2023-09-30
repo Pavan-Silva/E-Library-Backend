@@ -19,15 +19,12 @@ public class User {
     private Integer id;
 
     @Size(max = 45)
-    @Column(name = "username", length = 45)
-    private String username;
+    @Column(name = "email", length = 45)
+    private String email;
 
     @Size(max = 68)
     @Column(name = "password", length = 68)
     private String password;
-
-    @Column(name = "active")
-    private Boolean active;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {
             CascadeType.DETACH,
