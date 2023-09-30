@@ -18,7 +18,6 @@ import java.util.*;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
-
     private final RoleRepository roleRepository;
 
     @Override
@@ -55,10 +54,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberDto update(MemberDto memberDto) {
-        Optional<Member> optMember = memberRepository.findById(memberDto.getId());
-
-        if (optMember.isPresent()) {
+        if (memberRepository.existsById(memberDto.getId())) {
             Member member = Mapper.dtoToMember(memberDto);
+
             member.getUser().setId(member.getId());
 
             return Mapper.memberToDto(memberRepository.save(member));
@@ -70,9 +68,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void deleteById(int id) {
-        Optional<Member> optMember = memberRepository.findById(id);
-
-        if (optMember.isPresent()) {
+        if (memberRepository.existsById(id)) {
             memberRepository.deleteById(id);
 
         } else {

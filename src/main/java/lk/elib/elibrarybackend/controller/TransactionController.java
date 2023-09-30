@@ -1,6 +1,6 @@
 package lk.elib.elibrarybackend.controller;
 
-import lk.elib.elibrarybackend.entity.Transaction;
+import lk.elib.elibrarybackend.dto.TransactionDto;
 import lk.elib.elibrarybackend.service.transaction.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,23 +15,23 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @GetMapping
-    public List<Transaction> findAllTransactions() {
+    public List<TransactionDto> findAllTransactions() {
         return transactionService.findAll();
     }
 
     @GetMapping("/{id}")
-    public Transaction findById(@PathVariable int id) {
+    public TransactionDto findById(@PathVariable int id) {
         return transactionService.findById(id);
     }
 
     @PostMapping
-    public Transaction addNewTransaction(@RequestBody Transaction transaction) {
-        return transactionService.save(transaction);
+    public TransactionDto addNewTransaction(@RequestBody TransactionDto transactionDto) {
+        return transactionService.save(transactionDto);
     }
 
     @PutMapping
-    public Transaction updateTransaction(@RequestBody Transaction transaction) {
-        return transactionService.update(transaction);
+    public TransactionDto updateTransaction(@RequestBody TransactionDto transactionDto) {
+        return transactionService.update(transactionDto);
     }
 
     @DeleteMapping("/{id}")

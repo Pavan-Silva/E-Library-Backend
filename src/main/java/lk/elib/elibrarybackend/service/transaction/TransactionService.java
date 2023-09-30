@@ -1,18 +1,18 @@
 package lk.elib.elibrarybackend.service.transaction;
 
-import lk.elib.elibrarybackend.entity.Transaction;
+import lk.elib.elibrarybackend.dto.TransactionDto;
 
 import java.util.List;
 
 public interface TransactionService {
 
-    List<Transaction> findAll();
+    List<TransactionDto> findAll();
 
-    Transaction findById(int id);
+    TransactionDto findById(int id);
 
-    Transaction save(Transaction transaction);
+    TransactionDto save(TransactionDto transactionDto);
 
-    Transaction update(Transaction transaction);
+    TransactionDto update(TransactionDto transactionDto);
 
     void deleteById(int id);
 }

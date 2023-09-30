@@ -1,10 +1,11 @@
 package lk.elib.elibrarybackend.controller;
 
-import lk.elib.elibrarybackend.entity.Book;
+import lk.elib.elibrarybackend.dto.BookDto;
 import lk.elib.elibrarybackend.projection.BookFilter;
 import lk.elib.elibrarybackend.service.book.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -20,7 +21,7 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public Book findBookById(@PathVariable int id) {
+    public BookDto findBookById(@PathVariable int id) {
         return bookService.findById(id);
     }
 
@@ -35,13 +36,13 @@ public class BookController {
     }
 
     @PostMapping
-    public Book addNewBook(@RequestBody Book book) {
-        return bookService.save(book);
+    public BookDto addNewBook(@RequestBody BookDto bookDto) {
+        return bookService.save(bookDto);
     }
 
     @PutMapping
-    public Book updateBook(@RequestBody Book book) {
-        return bookService.update(book);
+    public BookDto updateBook(@RequestBody BookDto bookDto) {
+        return bookService.update(bookDto);
     }
 
     @DeleteMapping("/{id}")

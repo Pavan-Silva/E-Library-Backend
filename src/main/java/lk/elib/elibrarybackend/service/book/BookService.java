@@ -1,6 +1,6 @@
 package lk.elib.elibrarybackend.service.book;
 
-import lk.elib.elibrarybackend.entity.Book;
+import lk.elib.elibrarybackend.dto.BookDto;
 import lk.elib.elibrarybackend.projection.BookFilter;
 
 import java.util.List;
@@ -8,13 +8,13 @@ import java.util.List;
 public interface BookService {
     List<BookFilter> getBookList();
 
-    Book findById(int id);
+    BookDto findById(int id);
 
     List<BookFilter> search(String query);
 
-    Book save(Book book);
+    BookDto save(BookDto bookDto);
 
-    Book update(Book book);
+    BookDto update(BookDto bookDto);
 
     void deleteById(int id);
 }

@@ -1,17 +1,18 @@
 package lk.elib.elibrarybackend.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
+
 @Getter
 @Setter
 @NoArgsConstructor
-public class GenderDto {
+public class TransactionDto {
 
     private Integer id;
-
-    @NotBlank
-    private String name;
+    private BookDto bookIsbn;
+    private MemberDto memberUser;
+    private Instant date;
 }

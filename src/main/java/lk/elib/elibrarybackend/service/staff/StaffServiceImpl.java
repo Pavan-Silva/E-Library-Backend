@@ -11,14 +11,16 @@ import lk.elib.elibrarybackend.util.Mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class StaffServiceImpl implements StaffService {
 
     private final StaffRepository staffRepository;
-
     private final RoleRepository roleRepository;
 
     @Override
@@ -57,24 +59,21 @@ public class StaffServiceImpl implements StaffService {
 
     @Override
     public StaffMemberDto update(StaffMemberDto staffMemberDto) {
-        StaffMember staffMember = Mapper.dtoToStaffMember(staffMemberDto);
+        if (staffRepository.existsById(staffMemberDto.getId())) {
+            StaffMember staffMember = Mapper.dtoToStaffMember(staffMemberDto);
 
-        Optional<StaffMember> optStaffMember = staffRepository.findById(staffMember.getId());
-
-        if (optStaffMember.isPresent()) {
             staffMember.getUser().setId(staffMember.getId());
+
             return Mapper.staffMemberToDto(staffRepository.save(staffMember));
 
         } else {
-            throw new ResourceNotFoundException("Invalid staff id - " + staffMember.getId());
+            throw new ResourceNotFoundException("Invalid staff id - " + staffMemberDto.getId());
         }
     }
 
     @Override
     public void deleteById(int id) {
-        Optional<StaffMember> optStaffMember = staffRepository.findById(id);
-
-        if (optStaffMember.isPresent()) {
+        if (staffRepository.existsById(id)) {
             staffRepository.deleteById(id);
 
         } else {

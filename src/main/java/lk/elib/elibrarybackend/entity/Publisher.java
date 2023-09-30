@@ -10,9 +10,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "publishers")
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "publishers")
 public class Publisher {
 
     @Id

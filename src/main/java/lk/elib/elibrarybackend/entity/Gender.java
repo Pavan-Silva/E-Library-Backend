@@ -10,9 +10,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "genders")
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "genders")
 public class Gender {
 
     @Id

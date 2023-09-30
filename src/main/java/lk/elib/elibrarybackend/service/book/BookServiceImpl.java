@@ -1,9 +1,11 @@
 package lk.elib.elibrarybackend.service.book;
 
+import lk.elib.elibrarybackend.dto.BookDto;
 import lk.elib.elibrarybackend.entity.Book;
 import lk.elib.elibrarybackend.exception.ResourceNotFoundException;
 import lk.elib.elibrarybackend.projection.BookFilter;
 import lk.elib.elibrarybackend.repository.BookRepository;
+import lk.elib.elibrarybackend.util.Mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +24,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book findById(int id) {
+    public BookDto findById(int id) {
         Optional<Book> bookOpt = bookRepository.findById(id);
 
         if (bookOpt.isPresent()) {
-            return bookOpt.get();
+            return Mapper.bookToDto(bookOpt.get());
 
         } else {
             throw new ResourceNotFoundException("Invalid book id - " + id);
@@ -35,31 +37,29 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookFilter> search(String query) {
-        return bookRepository.search(query);
+        return bookRepository.findByTitleLike(query);
     }
 
     @Override
-    public Book save(Book book) {
-        return bookRepository.save(book);
+    public BookDto save(BookDto bookDto) {
+        Book book = Mapper.dtoToBook(bookDto);
+        return Mapper.bookToDto(bookRepository.save(book));
     }
 
     @Override
-    public Book update(Book book) {
-        Optional<Book> bookOpt = bookRepository.findById(book.getId());
-
-        if (bookOpt.isPresent()) {
-            return bookRepository.save(book);
+    public BookDto update(BookDto bookDto) {
+        if (bookRepository.existsById(bookDto.getId())) {
+            Book book = Mapper.dtoToBook(bookDto);
+            return Mapper.bookToDto(bookRepository.save(book));
 
         } else {
-            throw new ResourceNotFoundException("Invalid book id - " + book.getId());
+            throw new ResourceNotFoundException("Invalid book id - " + bookDto.getId());
         }
     }
 
     @Override
     public void deleteById(int id) {
-        Optional<Book> bookOpt = bookRepository.findById(id);
-
-        if (bookOpt.isPresent()) {
+        if (bookRepository.existsById(id)) {
             bookRepository.deleteById(id);
 
         } else {

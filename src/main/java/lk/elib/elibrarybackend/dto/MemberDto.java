@@ -1,6 +1,6 @@
 package lk.elib.elibrarybackend.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,18 +12,18 @@ public class MemberDto {
 
     Integer id;
 
-    @NotNull
+    @NotBlank
     UserDto user;
 
-    @NotNull
+    @NotBlank
     String firstName;
 
-    @NotNull
+    @NotBlank
     String lastName;
 
-    @NotNull
+    @NotBlank
     String email;
 
-    @NotNull
+    @NotBlank
     String mobile;
 }
