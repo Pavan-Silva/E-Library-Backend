@@ -4,8 +4,10 @@ import lk.elib.elibrarybackend.dto.JwtAuthResponse;
 import lk.elib.elibrarybackend.dto.LoginDto;
 import lk.elib.elibrarybackend.dto.MemberDto;
 import lk.elib.elibrarybackend.dto.TokenRequest;
+import lk.elib.elibrarybackend.exception.UserAlreadyExistsException;
 import lk.elib.elibrarybackend.security.JwtTokenProvider;
 import lk.elib.elibrarybackend.service.member.MemberService;
+import lk.elib.elibrarybackend.service.user.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +22,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberService memberService;
+    private final CustomUserDetailsService userDetailsService;
 
     @Override
     public JwtAuthResponse login(LoginDto loginDto) {
@@ -37,13 +40,19 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public JwtAuthResponse register(MemberDto memberDto) {
-        memberService.save(memberDto);
 
-        LoginDto login = new LoginDto();
-        login.setEmail(memberDto.getUser().getEmail());
-        login.setPassword(memberDto.getUser().getPassword());
+        if (userDetailsService.userExistsWithEmail(memberDto.getUser().getEmail())) {
+            throw new UserAlreadyExistsException("Try another email");
 
-        return login(login);
+        } else {
+            memberService.save(memberDto);
+
+            LoginDto login = new LoginDto();
+            login.setEmail(memberDto.getUser().getEmail());
+            login.setPassword(memberDto.getUser().getPassword());
+
+            return login(login);
+        }
     }
 
     @Override

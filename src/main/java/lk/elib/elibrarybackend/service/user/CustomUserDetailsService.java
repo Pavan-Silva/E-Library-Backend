@@ -37,4 +37,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                 authorities
         );
     }
+
+    public boolean userExistsWithEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
 }
