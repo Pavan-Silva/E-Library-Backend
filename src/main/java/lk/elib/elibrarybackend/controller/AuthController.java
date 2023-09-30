@@ -3,6 +3,7 @@ package lk.elib.elibrarybackend.controller;
 import lk.elib.elibrarybackend.dto.JwtAuthResponse;
 import lk.elib.elibrarybackend.dto.LoginDto;
 import lk.elib.elibrarybackend.dto.MemberDto;
+import lk.elib.elibrarybackend.dto.TokenRequest;
 import lk.elib.elibrarybackend.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,19 +21,16 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtAuthResponse> authenticateUser(@RequestBody LoginDto loginDto){
-        String token = authService.login(loginDto);
-
-        JwtAuthResponse authResponse = new JwtAuthResponse();
-        authResponse.setAccessToken(token);
-
-        return ResponseEntity.ok(authResponse);
+        return ResponseEntity.ok(authService.login(loginDto));
     }
 
     @PostMapping("/register")
     public ResponseEntity<JwtAuthResponse> registerUser(@RequestBody MemberDto memberDto) {
-        JwtAuthResponse authResponse = new JwtAuthResponse();
-        authResponse.setAccessToken(authService.register(memberDto));
+        return ResponseEntity.ok(authService.register(memberDto));
+    }
 
-        return ResponseEntity.ok(authResponse);
+    @PostMapping("/refresh")
+    public ResponseEntity<JwtAuthResponse> refreshToken(@RequestBody TokenRequest tokenRequest) {
+        return ResponseEntity.ok(authService.refreshToken(tokenRequest));
     }
 }

@@ -1,7 +1,9 @@
 package lk.elib.elibrarybackend.service.auth;
 
+import lk.elib.elibrarybackend.dto.JwtAuthResponse;
 import lk.elib.elibrarybackend.dto.LoginDto;
 import lk.elib.elibrarybackend.dto.MemberDto;
+import lk.elib.elibrarybackend.dto.TokenRequest;
 import lk.elib.elibrarybackend.security.JwtTokenProvider;
 import lk.elib.elibrarybackend.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -20,17 +22,21 @@ public class AuthServiceImpl implements AuthService {
     private final MemberService memberService;
 
     @Override
-    public String login(LoginDto loginDto) {
+    public JwtAuthResponse login(LoginDto loginDto) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginDto.getUsername(), loginDto.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return jwtTokenProvider.generateToken(authentication);
+        JwtAuthResponse authResponse = new JwtAuthResponse();
+        authResponse.setAccessToken(jwtTokenProvider.generateToken(authentication));
+        authResponse.setRefreshToken(jwtTokenProvider.generateRefreshToken(loginDto.getUsername()));
+
+        return authResponse;
     }
 
     @Override
-    public String register(MemberDto memberDto) {
+    public JwtAuthResponse register(MemberDto memberDto) {
         memberService.save(memberDto);
 
         LoginDto login = new LoginDto();
@@ -38,5 +44,16 @@ public class AuthServiceImpl implements AuthService {
         login.setPassword(memberDto.getUser().getPassword());
 
         return login(login);
+    }
+
+    @Override
+    public JwtAuthResponse refreshToken(TokenRequest tokenRequest) {
+        JwtAuthResponse authResponse = new JwtAuthResponse();
+        authResponse.setAccessToken(jwtTokenProvider.refreshToken(tokenRequest.getToken()));
+        authResponse.setRefreshToken(jwtTokenProvider.generateRefreshToken(
+                jwtTokenProvider.getUsername(tokenRequest.getToken())
+        ));
+
+        return authResponse;
     }
 }

@@ -3,6 +3,7 @@ package lk.elib.elibrarybackend.security;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,14 +24,31 @@ public class JwtTokenProvider {
     @Value("${jwt.expirationInMs}")
     private long jwtExpirationDate;
 
+    @Value("${jwt.refreshExpirationInMs}")
+    private long refreshTokenExpirationDate;
+
     public String generateToken(Authentication authentication){
         String username = authentication.getName();
-        Date expireDate = new Date(System.currentTimeMillis() + jwtExpirationDate);
+
+        Date currentDate = new Date();
+        Date expireDate = new Date(currentDate.getTime() + jwtExpirationDate);
 
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(expireDate)
+                .signWith(key())
+                .compact();
+    }
+
+    public String generateRefreshToken(String username) {
+        Date currentDate = new Date();
+        Date expireDate = new Date(currentDate.getTime() + refreshTokenExpirationDate);
+
+        return Jwts.builder()
+                .setSubject("refresh_token")
+                .setExpiration(expireDate)
+                .claim("username", username)
                 .signWith(key())
                 .compact();
     }
@@ -51,7 +69,7 @@ public class JwtTokenProvider {
         return claims.getSubject();
     }
 
-    public boolean validateToken(String token) throws ExpiredJwtException {
+    public boolean validateToken(String token) {
         try{
 
             Jwts.parserBuilder()
@@ -74,5 +92,26 @@ public class JwtTokenProvider {
         }
 
         return false;
+    }
+
+    public String refreshToken(String token) {
+        try {
+            Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(key())
+                    .build()
+                    .parseClaimsJws(token);
+
+            Date currentDate = new Date();
+            Date expireDate = new Date(currentDate.getTime() + jwtExpirationDate);
+
+            return Jwts.builder()
+                    .setSubject(claims.getBody().get("username").toString())
+                    .setIssuedAt(new Date())
+                    .setExpiration(expireDate)
+                    .signWith(key())
+                    .compact();
+
+        } catch (SignatureException e) {
+            return null;
+        }
     }
 }

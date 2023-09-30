@@ -1,10 +1,14 @@
 package lk.elib.elibrarybackend.service.auth;
 
+import lk.elib.elibrarybackend.dto.JwtAuthResponse;
 import lk.elib.elibrarybackend.dto.LoginDto;
 import lk.elib.elibrarybackend.dto.MemberDto;
+import lk.elib.elibrarybackend.dto.TokenRequest;
 
 public interface AuthService {
-    String login(LoginDto loginDto);
+    JwtAuthResponse login(LoginDto loginDto);
 
-    String register(MemberDto memberDto);
+    JwtAuthResponse register(MemberDto memberDto);
+
+    JwtAuthResponse refreshToken(TokenRequest tokenRequest);
 }

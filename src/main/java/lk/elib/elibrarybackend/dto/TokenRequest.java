@@ -7,9 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class JwtAuthResponse {
+public class TokenRequest {
 
-    private String accessToken;
-    private String refreshToken;
-    private String tokenType = "Bearer";
+    private String token;
 }
