@@ -1,6 +1,5 @@
 package lk.elib.elibrarybackend.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -14,7 +13,6 @@ import lombok.Setter;
 @Table(name = "members")
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Member {
 
     @Id
@@ -41,5 +39,4 @@ public class Member {
     @Size(max = 10)
     @Column(name = "mobile", length = 10)
     private String mobile;
-
 }

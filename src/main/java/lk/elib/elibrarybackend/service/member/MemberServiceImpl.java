@@ -11,9 +11,7 @@ import lk.elib.elibrarybackend.security.PasswordEncoder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +46,7 @@ public class MemberServiceImpl implements MemberService {
                 member.getUser().getPassword()
         ));
 
-        List<Role> roles = new ArrayList<>();
+        Set<Role> roles = new HashSet<>();
         roles.add(roleRepository.findByName("ROLE_MEMBER"));
         member.getUser().setRoles(roles);
 

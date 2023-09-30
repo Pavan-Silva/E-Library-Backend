@@ -1,6 +1,6 @@
 package lk.elib.elibrarybackend.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,9 +10,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class LoginDto {
 
-    @NotNull
+    @NotBlank
     private String username;
 
-    @NotNull
+    @NotBlank
     private String password;
 }
