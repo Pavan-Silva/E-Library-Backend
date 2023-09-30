@@ -17,18 +17,15 @@ public class JwtTokenProvider {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
-    @Value("${app.jwt-secret}")
+    @Value("${jwt.secret}")
     private String jwtSecret;
 
-    @Value("${app-jwt-expiration-milliseconds}")
+    @Value("${jwt.expirationInMs}")
     private long jwtExpirationDate;
 
     public String generateToken(Authentication authentication){
         String username = authentication.getName();
-
-        Date currentDate = new Date();
-
-        Date expireDate = new Date(currentDate.getTime() + jwtExpirationDate);
+        Date expireDate = new Date(System.currentTimeMillis() + jwtExpirationDate);
 
         return Jwts.builder()
                 .setSubject(username)
@@ -54,8 +51,9 @@ public class JwtTokenProvider {
         return claims.getSubject();
     }
 
-    public boolean validateToken(String token){
+    public boolean validateToken(String token) throws ExpiredJwtException {
         try{
+
             Jwts.parserBuilder()
                     .setSigningKey(key())
                     .build()

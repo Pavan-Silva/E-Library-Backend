@@ -39,25 +39,4 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = Mapper.dtoToTransaction(transactionDto);
         return Mapper.transactionToDto(transactionRepository.save(transaction));
     }
-
-    @Override
-    public TransactionDto update(TransactionDto transactionDto) {
-        if (transactionRepository.existsById(transactionDto.getId())) {
-            Transaction transaction = Mapper.dtoToTransaction(transactionDto);
-            return Mapper.transactionToDto(transactionRepository.save(transaction));
-
-        } else {
-            throw new ResourceNotFoundException("Invalid transaction id - " + transactionDto.getId());
-        }
-    }
-
-    @Override
-    public void deleteById(int id) {
-        if (transactionRepository.existsById(id)) {
-            transactionRepository.deleteById(id);
-
-        } else {
-            throw new ResourceNotFoundException("Invalid transaction id - " + id);
-        }
-    }
 }

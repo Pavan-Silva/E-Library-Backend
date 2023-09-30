@@ -9,7 +9,7 @@ public interface MemberService {
 
     MemberDto findById(int id);
 
-    MemberDto save(MemberDto memberDto);
+    void save(MemberDto memberDto);
 
     MemberDto update(MemberDto memberDto);
 

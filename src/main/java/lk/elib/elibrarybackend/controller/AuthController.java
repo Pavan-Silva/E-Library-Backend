@@ -2,6 +2,7 @@ package lk.elib.elibrarybackend.controller;
 
 import lk.elib.elibrarybackend.dto.JwtAuthResponse;
 import lk.elib.elibrarybackend.dto.LoginDto;
+import lk.elib.elibrarybackend.dto.MemberDto;
 import lk.elib.elibrarybackend.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +22,17 @@ public class AuthController {
     public ResponseEntity<JwtAuthResponse> authenticateUser(@RequestBody LoginDto loginDto){
         String token = authService.login(loginDto);
 
-        JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
-        jwtAuthResponse.setAccessToken(token);
+        JwtAuthResponse authResponse = new JwtAuthResponse();
+        authResponse.setAccessToken(token);
 
-        return ResponseEntity.ok(jwtAuthResponse);
+        return ResponseEntity.ok(authResponse);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<JwtAuthResponse> registerUser(@RequestBody MemberDto memberDto) {
+        JwtAuthResponse authResponse = new JwtAuthResponse();
+        authResponse.setAccessToken(authService.register(memberDto));
+
+        return ResponseEntity.ok(authResponse);
     }
 }

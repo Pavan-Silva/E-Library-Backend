@@ -1,7 +1,9 @@
 package lk.elib.elibrarybackend.service.auth;
 
 import lk.elib.elibrarybackend.dto.LoginDto;
+import lk.elib.elibrarybackend.dto.MemberDto;
 import lk.elib.elibrarybackend.security.JwtTokenProvider;
+import lk.elib.elibrarybackend.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +17,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
+    private final MemberService memberService;
 
     @Override
     public String login(LoginDto loginDto) {
@@ -24,5 +27,16 @@ public class AuthServiceImpl implements AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return jwtTokenProvider.generateToken(authentication);
+    }
+
+    @Override
+    public String register(MemberDto memberDto) {
+        memberService.save(memberDto);
+
+        LoginDto login = new LoginDto();
+        login.setUsername(memberDto.getUser().getUsername());
+        login.setPassword(memberDto.getUser().getPassword());
+
+        return login(login);
     }
 }

@@ -11,8 +11,4 @@ public interface TransactionService {
     TransactionDto findById(int id);
 
     TransactionDto save(TransactionDto transactionDto);
-
-    TransactionDto update(TransactionDto transactionDto);
-
-    void deleteById(int id);
 }

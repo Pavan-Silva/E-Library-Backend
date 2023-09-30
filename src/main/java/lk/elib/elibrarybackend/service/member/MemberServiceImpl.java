@@ -38,7 +38,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberDto save(MemberDto memberDto) {
+    public void save(MemberDto memberDto) {
         Member member = Mapper.dtoToMember(memberDto);
 
         member.getUser().setPassword(PasswordEncoder.encode(
@@ -49,7 +49,7 @@ public class MemberServiceImpl implements MemberService {
         roles.add(roleRepository.findByName("ROLE_MEMBER"));
         member.getUser().setRoles(roles);
 
-        return Mapper.memberToDto(memberRepository.save(member));
+        memberRepository.save(member);
     }
 
     @Override

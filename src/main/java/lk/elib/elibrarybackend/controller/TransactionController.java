@@ -28,14 +28,4 @@ public class TransactionController {
     public TransactionDto addNewTransaction(@RequestBody TransactionDto transactionDto) {
         return transactionService.save(transactionDto);
     }
-
-    @PutMapping
-    public TransactionDto updateTransaction(@RequestBody TransactionDto transactionDto) {
-        return transactionService.update(transactionDto);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteTransactionById(@PathVariable int id) {
-        transactionService.deleteById(id);
-    }
 }

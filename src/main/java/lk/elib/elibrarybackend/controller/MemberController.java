@@ -24,11 +24,6 @@ public class MemberController {
         return memberService.findById(id);
     }
 
-    @PostMapping
-    public MemberDto addNewMember(@RequestBody MemberDto memberDto) {
-        return memberService.save(memberDto);
-    }
-
     @PutMapping
     public MemberDto updateMember(@RequestBody MemberDto memberDto) {
         return memberService.update(memberDto);
