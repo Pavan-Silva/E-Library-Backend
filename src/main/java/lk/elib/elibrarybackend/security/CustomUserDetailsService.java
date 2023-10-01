@@ -1,4 +1,4 @@
-package lk.elib.elibrarybackend.service.user;
+package lk.elib.elibrarybackend.security;
 
 import lk.elib.elibrarybackend.entity.User;
 import lk.elib.elibrarybackend.repository.UserRepository;

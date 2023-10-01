@@ -12,6 +12,8 @@ public interface BookService {
 
     List<BookFilter> search(String query);
 
+    List<BookFilter> findByCategory(String category);
+
     BookDto save(BookDto bookDto);
 
     BookDto update(BookDto bookDto);

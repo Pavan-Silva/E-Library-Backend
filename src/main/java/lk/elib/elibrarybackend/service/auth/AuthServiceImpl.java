@@ -7,7 +7,7 @@ import lk.elib.elibrarybackend.dto.TokenRequest;
 import lk.elib.elibrarybackend.exception.UserAlreadyExistsException;
 import lk.elib.elibrarybackend.security.JwtTokenProvider;
 import lk.elib.elibrarybackend.service.member.MemberService;
-import lk.elib.elibrarybackend.service.user.CustomUserDetailsService;
+import lk.elib.elibrarybackend.security.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,7 +35,6 @@ public class AuthServiceImpl implements AuthService {
         JwtAuthResponse authResponse = new JwtAuthResponse();
         authResponse.setAccessToken(jwtTokenProvider.generateToken(authentication));
         authResponse.setRefreshToken(jwtTokenProvider.generateRefreshToken(loginDto.getEmail()));
-        authResponse.setSuccess(true);
 
         return authResponse;
     }
@@ -68,10 +67,6 @@ public class AuthServiceImpl implements AuthService {
             authResponse.setRefreshToken(jwtTokenProvider.generateRefreshToken(
                     jwtTokenProvider.getEmail(tokenRequest.getToken())
             ));
-            authResponse.setSuccess(true);
-
-        } else {
-            authResponse.setSuccess(false);
         }
 
         return authResponse;

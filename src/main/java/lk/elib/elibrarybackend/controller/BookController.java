@@ -31,8 +31,8 @@ public class BookController {
     }
 
     @GetMapping("/categories")
-    public List<BookFilter> findBooksByCategory(@RequestParam String query) {
-        return null;
+    public List<BookFilter> findBooksByCategory(@RequestParam String category) {
+        return bookService.findByCategory(category);
     }
 
     @PostMapping
