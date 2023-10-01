@@ -14,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +35,7 @@ public class AuthServiceImpl implements AuthService {
         JwtAuthResponse authResponse = new JwtAuthResponse();
         authResponse.setAccessToken(jwtTokenProvider.generateToken(authentication));
         authResponse.setRefreshToken(jwtTokenProvider.generateRefreshToken(loginDto.getEmail()));
+        authResponse.setSuccess(true);
 
         return authResponse;
     }
@@ -58,10 +60,19 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public JwtAuthResponse refreshToken(TokenRequest tokenRequest) {
         JwtAuthResponse authResponse = new JwtAuthResponse();
-        authResponse.setAccessToken(jwtTokenProvider.refreshToken(tokenRequest.getToken()));
-        authResponse.setRefreshToken(jwtTokenProvider.generateRefreshToken(
-                jwtTokenProvider.getEmail(tokenRequest.getToken())
-        ));
+
+        String token = jwtTokenProvider.refreshToken(tokenRequest.getToken());
+
+        if (StringUtils.hasText(token)) {
+            authResponse.setAccessToken(token);
+            authResponse.setRefreshToken(jwtTokenProvider.generateRefreshToken(
+                    jwtTokenProvider.getEmail(tokenRequest.getToken())
+            ));
+            authResponse.setSuccess(true);
+
+        } else {
+            authResponse.setSuccess(false);
+        }
 
         return authResponse;
     }
