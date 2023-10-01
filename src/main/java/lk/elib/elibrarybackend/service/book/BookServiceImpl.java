@@ -3,7 +3,7 @@ package lk.elib.elibrarybackend.service.book;
 import lk.elib.elibrarybackend.dto.BookDto;
 import lk.elib.elibrarybackend.entity.Book;
 import lk.elib.elibrarybackend.exception.ResourceNotFoundException;
-import lk.elib.elibrarybackend.projection.BookFilter;
+import lk.elib.elibrarybackend.views.BookView;
 import lk.elib.elibrarybackend.repository.BookRepository;
 import lk.elib.elibrarybackend.repository.CategoryRepository;
 import lk.elib.elibrarybackend.util.Mapper;
@@ -21,7 +21,7 @@ public class BookServiceImpl implements BookService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public List<BookFilter> getBookList() {
+    public List<BookView> getBookList() {
         return bookRepository.getBookList();
     }
 
@@ -38,12 +38,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookFilter> search(String query) {
+    public List<BookView> search(String query) {
         return bookRepository.findByTitleLike(query);
     }
 
     @Override
-    public List<BookFilter> findByCategory(String category) {
+    public List<BookView> findByCategory(String category) {
         return bookRepository.findByCategory(categoryRepository.findByNameIgnoreCase(category));
     }
 

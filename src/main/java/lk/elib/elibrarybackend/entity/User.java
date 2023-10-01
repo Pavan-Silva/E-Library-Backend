@@ -22,7 +22,11 @@ public class User {
     @Column(name = "email", length = 45)
     private String email;
 
-    @Size(max = 68)
+    @Size(max = 45)
+    @Column(name = "username", length = 45)
+    private String username;
+
+    @Size(max = 100)
     @Column(name = "password", length = 68)
     private String password;
 

@@ -4,10 +4,11 @@ import lk.elib.elibrarybackend.dto.JwtAuthResponse;
 import lk.elib.elibrarybackend.dto.LoginDto;
 import lk.elib.elibrarybackend.dto.MemberDto;
 import lk.elib.elibrarybackend.dto.TokenRequest;
+import lk.elib.elibrarybackend.exception.AuthenticationException;
 import lk.elib.elibrarybackend.exception.UserAlreadyExistsException;
+import lk.elib.elibrarybackend.security.CustomUserDetailsService;
 import lk.elib.elibrarybackend.security.JwtTokenProvider;
 import lk.elib.elibrarybackend.service.member.MemberService;
-import lk.elib.elibrarybackend.security.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,16 +28,23 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public JwtAuthResponse login(LoginDto loginDto) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                loginDto.getEmail(), loginDto.getPassword()));
+        String username = userDetailsService.getUsernameByEmail(loginDto.getEmail());
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (StringUtils.hasText(username)) {
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    username, loginDto.getPassword()));
 
-        JwtAuthResponse authResponse = new JwtAuthResponse();
-        authResponse.setAccessToken(jwtTokenProvider.generateToken(authentication));
-        authResponse.setRefreshToken(jwtTokenProvider.generateRefreshToken(loginDto.getEmail()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return authResponse;
+            JwtAuthResponse authResponse = new JwtAuthResponse();
+            authResponse.setAccessToken(jwtTokenProvider.generateToken(authentication));
+            authResponse.setRefreshToken(jwtTokenProvider.generateRefreshToken(username));
+
+            return authResponse;
+
+        } else {
+            throw new AuthenticationException(null);
+        }
     }
 
     @Override
@@ -46,13 +54,18 @@ public class AuthServiceImpl implements AuthService {
             throw new UserAlreadyExistsException("Try another email");
 
         } else {
-            memberService.save(memberDto);
+            if (userDetailsService.userExistsWithUsername("")) {
+                throw new UserAlreadyExistsException("Try another username");
 
-            LoginDto login = new LoginDto();
-            login.setEmail(memberDto.getUser().getEmail());
-            login.setPassword(memberDto.getUser().getPassword());
+            } else {
+                memberService.save(memberDto);
 
-            return login(login);
+                LoginDto login = new LoginDto();
+                login.setEmail(memberDto.getUser().getEmail());
+                login.setPassword(memberDto.getUser().getPassword());
+
+                return login(login);
+            }
         }
     }
 
@@ -65,7 +78,7 @@ public class AuthServiceImpl implements AuthService {
         if (StringUtils.hasText(token)) {
             authResponse.setAccessToken(token);
             authResponse.setRefreshToken(jwtTokenProvider.generateRefreshToken(
-                    jwtTokenProvider.getEmail(tokenRequest.getToken())
+                    jwtTokenProvider.getUsername(tokenRequest.getToken())
             ));
         }
 

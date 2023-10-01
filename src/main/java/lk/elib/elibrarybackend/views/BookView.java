@@ -1,6 +1,6 @@
-package lk.elib.elibrarybackend.projection;
+package lk.elib.elibrarybackend.views;
 
-public interface BookFilter {
+public interface BookView {
 
     Integer getId();
 

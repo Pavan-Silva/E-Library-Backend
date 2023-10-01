@@ -50,7 +50,7 @@ public class StaffServiceImpl implements StaffService {
 
         Set<Role> roles = new HashSet<>();
         roles.add(roleRepository.findByName("ROLE_MEMBER"));
-        roles.add(roleRepository.findByName("ROLE_EMPLOYEE"));
+        roles.add(roleRepository.findByName("ROLE_STAFF"));
 
         staffMember.getUser().setRoles(roles);
 

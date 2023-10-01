@@ -15,14 +15,15 @@ import java.util.List;
 public class UserDto {
 
     @JsonIgnore
-    Integer id;
+    private Integer id;
 
     @NotNull
-    List<RoleDto> roles;
+    private List<RoleDto> roles;
+
+    private String email;
+
+    private String username;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    String email;
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    String password;
+    private String password;
 }
