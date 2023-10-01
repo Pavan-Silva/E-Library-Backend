@@ -44,10 +44,17 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/books").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/books/search/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/books/categories/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/api/books/**").hasAnyRole("MEMBER", "EMPLOYEE", "MANAGER")
+                                .requestMatchers(HttpMethod.GET, "/api/books/**").hasAnyRole("MEMBER", "STAFF")
 
-                                .requestMatchers("/api/staff/**").hasRole("MANAGER")
-                                .requestMatchers("/api/members/**").hasAnyRole("EMPLOYEE", "MANAGER")
+
+                                .requestMatchers(HttpMethod.GET, "/api/members").hasAnyRole("STAFF")
+                                .requestMatchers(HttpMethod.GET, "/api/members/**").hasAnyRole("MEMBER", "STAFF")
+                                .requestMatchers(HttpMethod.PUT,"/api/members").hasAnyRole("MEMBER", "STAFF")
+                                .requestMatchers(HttpMethod.DELETE,"/api/members/**").hasAnyRole("MEMBER", "STAFF")
+
+                                .requestMatchers("/api/staff/**").hasAnyRole("MANAGER")
+
+                                .requestMatchers("/api/transactions/**").hasRole("STAFF")
                                 .anyRequest().authenticated()
                                     .and()
                                     .addFilterBefore(authenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
