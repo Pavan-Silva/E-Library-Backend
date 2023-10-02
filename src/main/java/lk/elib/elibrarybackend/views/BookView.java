@@ -6,5 +6,5 @@ public interface BookView {
 
     String getTitle();
 
-    Byte[] getCoverImage();
+    byte[] getCoverImage();
 }

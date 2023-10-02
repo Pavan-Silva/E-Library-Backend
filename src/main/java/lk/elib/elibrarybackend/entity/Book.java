@@ -27,11 +27,9 @@ public class Book {
     @Column(name = "year")
     private Integer year;
 
-    @Lob
     @Column(name = "cover_image")
     private byte[] coverImage;
 
-    @Lob
     @Column(name = "pdf")
     private byte[] pdf;
 

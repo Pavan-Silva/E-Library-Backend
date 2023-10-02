@@ -1,8 +1,8 @@
 package lk.elib.elibrarybackend.controller;
 
 import lk.elib.elibrarybackend.dto.BookDto;
-import lk.elib.elibrarybackend.views.BookView;
 import lk.elib.elibrarybackend.service.book.BookService;
+import lk.elib.elibrarybackend.views.BookView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin("*")
 @RequestMapping("/api/books")
 public class BookController {
 

@@ -33,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .map((role) -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toSet());
 
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
+                user.getUsername(),
                 user.getPassword(),
                 authorities
         );
@@ -51,5 +51,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         Optional<User> userOpt = userRepository.findByEmail(email);
 
         return userOpt.map(User::getUsername).orElse(null);
+
     }
 }
